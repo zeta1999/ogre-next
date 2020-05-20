@@ -192,6 +192,22 @@ namespace Ogre
             it->Reset();
 
         _destroyAllDelayedBuffers();
+
+        for( VaoVec::iterator it = mVaos.begin(), it_end = mVaos.end(); it != it_end; ++it )
+        {
+            for( size_t i = 0; i < 16; ++i )
+                it->sharedData->mVertexBuffers[i].Reset();
+            it->sharedData->mIndexBuffer.Reset();
+        }
+
+        for( size_t i=0; i<NumInternalBufferTypes; ++i )
+        {
+            for( size_t j=0; j<BT_DYNAMIC_DEFAULT+1; ++j )
+            {
+                for( VboVec::iterator it = mVbos[i][j].begin(), it_end = mVbos[i][j].end(); it != it_end; ++it )
+                    it->vboName.Reset();
+            }
+        }
     }
     //-----------------------------------------------------------------------------------
     void D3D11VaoManager::getMemoryStats( const Block &block, uint32 vboIdx0, uint32 vboIdx1,
